@@ -107,8 +107,8 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     private final RecipeClickListener recipeClickListener = new RecipeClickListener() {
         @Override
         public void onRecipeClicked(String id) {
-         startActivity(new Intent(RecipeDetailsActivity.this, RecipeDetailsActivity.class)
-        .putExtra("id", id));
+            startActivity(new Intent(RecipeDetailsActivity.this, RecipeDetailsActivity.class)
+                    .putExtra("id", id));
         }
     };
 }

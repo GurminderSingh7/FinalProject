@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">FlavorQuest</string>
     <string name="api_key">4b6e3b52a39243c19aaa18aca7596835</string>
+
     <string-array name="tags">
         <item>main course</item>
         <item>side dish</item>

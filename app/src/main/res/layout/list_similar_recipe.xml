@@ -19,7 +19,7 @@
             android:id="@+id/textView_similar_title"
             android:text="Similar Name"
             android:textStyle="bold"
-            android:textColor="@color/orange"
+            android:textColor="@color/teal_200"
             android:padding="8dp"
             android:textAlignment="center"
             android:singleLine="true"

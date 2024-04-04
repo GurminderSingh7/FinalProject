@@ -13,11 +13,25 @@ import java.util.List;
 import algonquin.cst2335.finalproject.Models.ExtendedIngredient;
 import algonquin.cst2335.finalproject.R;
 
+/**
+ * Adapter for a RecyclerView that displays ingredients. Each item in the list shows the name,
+ * quantity, and an image of the ingredient.
+ *
+ * Author: Meet Maheta
+ * Lab Session: 012
+ * Date: 3 April 2024
+ */
 public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.IngredientsViewHolder> {
 
     Context context;
     List<ExtendedIngredient> list;
 
+    /**
+     * Constructs an IngredientsAdapter.
+     *
+     * @param context The current context, used to inflate the layout.
+     * @param list A list of ExtendedIngredient objects to be displayed.
+     */
     public IngredientsAdapter(Context context, List<ExtendedIngredient> list) {
         this.context = context;
         this.list = list;
@@ -42,15 +56,23 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         return list.size();
     }
 
+    /**
+     * Provides a reference to the type of views used (ingredients) in the RecyclerView.
+     */
     static class IngredientsViewHolder extends RecyclerView.ViewHolder {
         TextView textView_ingredients_quantity, textView_ingredients_name;
         ImageView imageView_ingredients;
 
+        /**
+         * Constructor for the IngredientsViewHolder.
+         *
+         * @param itemView The view in which the ingredients will be displayed.
+         */
         public IngredientsViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView_ingredients_quantity = itemView.findViewById(R.id.textview_ingredients_quantity); // Ensure ID matches
-            textView_ingredients_name = itemView.findViewById(R.id.textView_ingredients_name); // Ensure ID matches
-            imageView_ingredients = itemView.findViewById(R.id.imageview_ingredients); // Corrected ID to match XML
+            textView_ingredients_quantity = itemView.findViewById(R.id.textview_ingredients_quantity);
+            textView_ingredients_name = itemView.findViewById(R.id.textView_ingredients_name);
+            imageView_ingredients = itemView.findViewById(R.id.imageview_ingredients);
         }
     }
 }
