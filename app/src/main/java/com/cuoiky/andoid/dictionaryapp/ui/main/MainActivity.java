@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -29,7 +30,6 @@ import com.cuoiky.andoid.dictionaryapp.util.WordResponseListener;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.gson.Gson;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
@@ -39,11 +39,23 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.observers.DisposableSingleObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
+/**
+ * MainActivity serves as the main entry point of the application.
+ *
+ * <p>This activity allows users to search for words, view their favorites,
+ * and take quizzes. It also provides functionalities like removing favorites
+ * and checking for internet connection.</p>
+ *
+ * <p>Author: [Author's Name]</p>
+ * <p>Lab Section: [Lab Section Number]</p>
+ * <p>Creation Date: [Creation Date]</p>
+ */
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private static final String TAG = "MainActivity";
     private MainViewModel mViewModel;
     private FavouritesAdapter mFavAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,9 +66,35 @@ public class MainActivity extends AppCompatActivity {
             initValues();
         } catch(Exception e){
             Log.e(TAG,e.toString());
-        }
+        }	Button help =findViewById(R.id.Help);
+        help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showHelpInstructions();
+            }
+        });
+    } private void showHelpInstructions() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Help Instructions");
+        builder.setMessage("1. Search for a word in the search tab.\n\n"
+                + "2. Take a vocabulary test by pressing the button at the bottom.\n\n"
+                + "3. Check the results of the vocabulary test.\n\n"
+                + "4. Save your words for future reference even without an Internet connection by clicking the star button at the top left corner after entering the word for search.\n\n"
+                + "5. Delete your favorites by long-pressing the word listed and selecting 'remove' to remove that word. Select 'remove all' if you want to remove all of them.");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // Close the dialog
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
-    private void initValues(){
+
+    /**
+     * Initializes values and sets up the UI.
+     */
+    private void initValues() {
         mViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         mViewModel.init(getApplication());
         createSearchBarEvent();
@@ -81,16 +119,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    void createFavouritesRV(){
+
+    /**
+     * Initializes and configures the RecyclerView for displaying favorites.
+     */
+    private void createFavouritesRV(){
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(getApplicationContext());
         binding.rvFavourites.setLayoutManager(layoutManager);
         mFavAdapter = new FavouritesAdapter(getApplicationContext(),
                 new FavouritesAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Word item) {
-                openDetailActivity(item, true);
-            }
-        });
+                    @Override
+                    public void onItemClick(Word item) {
+                        openDetailActivity(item, true);
+                    }
+                });
         binding.rvFavourites.setAdapter(mFavAdapter);
         mViewModel.getFavWords().observe(this, new Observer<List<Word>>() {
             @Override
@@ -103,7 +145,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    void createSearchBarEvent(){
+
+    /**
+     * Sets up the search bar event listener.
+     */
+    private void createSearchBarEvent(){
         binding.svSearchbar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -137,7 +183,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    void openDetailActivity(Word word, Boolean isFav){
+
+    /**
+     * Opens the DetailActivity with the provided word.
+     * @param word The Word object to display.
+     * @param isFav Indicates whether the word is a favorite.
+     */
+    private void openDetailActivity(Word word, Boolean isFav){
         Gson gson = new Gson();
         String myJson = gson.toJson(word);
         Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
@@ -147,7 +199,12 @@ public class MainActivity extends AppCompatActivity {
         }
         startActivity(intent);
     }
-    void getWordFromApi(String text){
+
+    /**
+     * Retrieves a word from the API.
+     * @param text The word to search for.
+     */
+    private void getWordFromApi(String text){
         mViewModel.getWord(text, new WordResponseListener(){
             @Override
             public void onSuccess(Word word) {
@@ -173,16 +230,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-//    Check for internet connection
+
+    /**
+     * Checks for internet connection.
+     * @return True if there's an active internet connection, otherwise false.
+     */
     public boolean isConnected(){
         ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
+    /**
+     * Interface for removing selected words.
+     */
     public interface OnRemoveSelectedWords{
-        public void clear(boolean result);
+        void clear(boolean result);
     }
-    void createQuizEvent(){
+
+    /**
+     * Sets up the event listener for starting a quiz.
+     */
+    private void createQuizEvent(){
         binding.btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -194,17 +263,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * Displays the quiz dialog for selecting quiz parameters.
+     */
     public void openQuizDialog(){
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
         View mView = getLayoutInflater().inflate(R.layout.quiz_dialog, null);
-        final Spinner mLevelSpinner = (Spinner) mView.findViewById(R.id.spn_level);
-        final Spinner mAreaSpinner = (Spinner) mView.findViewById(R.id.spn_area);
+        final Spinner mLevelSpinner = mView.findViewById(R.id.spn_level);
+        final Spinner mAreaSpinner = mView.findViewById(R.id.spn_area);
         mBuilder.setTitle("Choose level and area for your test");
-        ArrayAdapter<String> mlevelAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item,
+        ArrayAdapter<String> mlevelAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_item,
                 getResources().getStringArray(R.array.levelList));
         mlevelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mLevelSpinner.setAdapter(mlevelAdapter);
-        ArrayAdapter<String> mAreaAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item,
+        ArrayAdapter<String> mAreaAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_item,
                 getResources().getStringArray(R.array.areaList));
         mAreaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mAreaSpinner.setAdapter(mAreaAdapter);
@@ -236,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
         mBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
+                dialogInterface.dismiss();
             }
         });
         mBuilder.setView(mView);

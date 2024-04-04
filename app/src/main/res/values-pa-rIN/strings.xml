@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dictionary App</string>
+    <string name="dictionary">Dictionary</string>
+
+
+    <string name="recent">ਹਾਲੀਆ</string>
+
+    <string name="definitions">ਪਰਿਭਾਸ਼ਾ</string>
+    <string name="synonyms">ਸਮਾਨਾਰਥੀ</string>
+    <string name="examples">ਸਮਾਨਾਰਥੀ</string>
+    <string name="results">ਨਤੀਜੇ</string>
+    <string name="favourites">ਮਨਪਸੰਦ</string>
+    <string name="remove">ਹਟਾਓ</string>
+    <string name="test">ਟੈਸਟ</string>
+    <string name="you_re_a_quizzard_harry">ਤੁਸੀਂ ਇੱਕ ਕੁਇਜ਼ਾਰਡ ਹੋ, ਹੈਰੀ!</string>
+    <string name="next">ਅਗਲਾ</string>
+</resources>

@@ -1,28 +1,36 @@
 package com.cuoiky.andoid.dictionaryapp.ui.main;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.cuoiky.andoid.dictionaryapp.R;
 import com.cuoiky.andoid.dictionaryapp.data.model.wordquiz.Quiz;
 import com.cuoiky.andoid.dictionaryapp.data.model.wordquiz.WordQuiz;
-import com.cuoiky.andoid.dictionaryapp.data.model.wordsapi.Word;
-import com.cuoiky.andoid.dictionaryapp.databinding.ActivityMainBinding;
 import com.cuoiky.andoid.dictionaryapp.databinding.ActivityQuizBinding;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 import java.util.List;
 import java.util.Locale;
 
-public class QuizActivity extends AppCompatActivity{
+/**
+ * Activity for conducting quizzes.
+ *
+ * <p>This activity displays quiz questions and options to the user, allows them to select an option,
+ * and provides feedback on their answers. After completing the quiz, it displays the user's score
+ * and allows them to reset the quiz.</p>
+ *
+ * <p>Author: Gurminder Singh Badwal</p>
+ * <p>Lab Section: 012</p>
+ * <p>Creation Date: 4th of April 2024</p>
+ */
+public class QuizActivity extends AppCompatActivity {
     private ActivityQuizBinding binding;
     private final String TAG = "QuizActivity";
     int currentQuizIndex = 0;
@@ -31,7 +39,9 @@ public class QuizActivity extends AppCompatActivity{
     private WordQuiz mQuiz;
     private List<Quiz> quizList;
     private List<String> quizzes;
+    Snackbar snack;
     private List<String> options;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,50 +50,47 @@ public class QuizActivity extends AppCompatActivity{
         setContentView(viewRoot);
         try {
             initValues();
-        } catch(Exception e){
-            Log.e(TAG,e.toString());
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
         }
     }
-    void initValues(){
+
+    /**
+     * Initialize the quiz values.
+     */
+    void initValues() {
         Gson gson = new Gson();
         Intent i = getIntent();
         mQuiz = gson.fromJson(i.getStringExtra("quiz"), WordQuiz.class);
         quizList = mQuiz.getQuizList();
         totalQuiz = quizList.size();
         loadNewQuiz();
-        binding.btnOpt1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                checkAnswer(binding.btnOpt1);
+        binding.btnOpt1.setOnClickListener(view -> checkAnswer(binding.btnOpt1));
+        binding.btnOpt2.setOnClickListener(view -> checkAnswer(binding.btnOpt2));
+        binding.btnNext.setOnClickListener(view -> {
+            if (isCorrect) {
+                score++;
             }
+            currentQuizIndex++;
+            loadNewQuiz();
         });
-        binding.btnOpt2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                checkAnswer(binding.btnOpt2);
-            }
-        });
-        binding.btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isCorrect){
-                    score++;
-                }
-                currentQuizIndex++;
-                loadNewQuiz();
-            }
-        });
+        snack = Snackbar.make(binding.getRoot(), "", Snackbar.LENGTH_SHORT);
     }
-    Boolean isCorrect = false;
-    void checkAnswer(View view){
+
+    /**
+     * Check the answer selected by the user.
+     *
+     * @param view The view corresponding to the selected option.
+     */
+    void checkAnswer(View view) {
         MaterialButton btn = (MaterialButton) view;
         String selected = btn.getText().toString().toLowerCase(Locale.ROOT);
         int correct = quizList.get(currentQuizIndex).getCorrect();
-        String answer = options.get(correct-1).toLowerCase(Locale.ROOT);
-        if (selected.equals(answer)){
+        String answer = options.get(correct - 1).toLowerCase(Locale.ROOT);
+        if (selected.equals(answer)) {
             isCorrect = true;
             btn.setBackgroundColor(getResources().getColor(R.color.success));
-        } else{
+        } else {
             isCorrect = false;
             btn.setBackgroundColor(getResources().getColor(R.color.danger));
         }
@@ -91,12 +98,16 @@ public class QuizActivity extends AppCompatActivity{
         binding.btnOpt1.setEnabled(false);
         binding.btnOpt2.setEnabled(false);
     }
-    void loadNewQuiz(){
-        if(currentQuizIndex == totalQuiz){
+
+    /**
+     * Load a new quiz question and options.
+     */
+    void loadNewQuiz() {
+        if (currentQuizIndex == totalQuiz) {
             finishQuiz();
             return;
         }
-        String count = String.valueOf(currentQuizIndex+1) + "/" + totalQuiz;
+        String count = (currentQuizIndex + 1) + "/" + totalQuiz;
         binding.tvCount.setText(count);
         quizzes = quizList.get(currentQuizIndex).getQuiz();
         options = quizList.get(currentQuizIndex).getOption();
@@ -112,15 +123,21 @@ public class QuizActivity extends AppCompatActivity{
         binding.btnOpt1.setEnabled(true);
         binding.btnOpt2.setEnabled(true);
     }
-    void finishQuiz(){
-        new AlertDialog.Builder(this)
-                .setTitle("Your results")
-                .setMessage(score +" out of "+ totalQuiz)
-                .setPositiveButton("OK",(dialogInterface, i) -> resetQuiz() )
-                .setCancelable(false)
-                .show();
+
+    /**
+     * Finish the quiz and display the user's score.
+     */
+    void finishQuiz() {
+        snack.setText("Your results: " + score + " out of " + totalQuiz);
+        snack.show();
     }
-    void resetQuiz(){
+
+    /**
+     * Reset the quiz.
+     */
+    void resetQuiz() {
         this.finish();
     }
+
+    Boolean isCorrect = false;
 }

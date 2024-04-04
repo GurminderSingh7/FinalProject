@@ -7,14 +7,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.main.MainActivity">
+
     <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/rozha_one_regular"
-        android:textColor="@color/primaryColor"
-        android:textSize="56sp"
         android:text="@string/dictionary"
-        />
+        android:textColor="@color/primaryColor"
+        android:textSize="56sp" />
+    <Button
+        android:id="@+id/Help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Help" />
     <androidx.appcompat.widget.SearchView
         android:id="@+id/sv_searchbar"
         android:theme="@style/BlackCursorSearchView"
@@ -75,4 +80,6 @@
             android:text="@string/test" />
 
     </RelativeLayout>
+
+
 </LinearLayout>
