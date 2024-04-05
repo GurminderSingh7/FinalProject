@@ -1,0 +1,9 @@
+<resources>
+<string name="app_name">Mon Application</string>
+<string name="lookup_button">Chercher</string>
+<string name="latitude_hint">Entrer la latitude</string>
+<string name="longitude_hint">Entrer la longitude</string>
+<string name="location_saved">Emplacement enregistré</string>
+
+
+    </resources>

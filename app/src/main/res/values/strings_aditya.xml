@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Final Project</string>
+    <string name="help" translatable="false">Help</string>
+    <string name="help_title" translatable="false">Help Title</string>
+    <string name="help_message" translatable="false">To get the sunrise and sunset times, please follow these steps:\n\n1. Enter the latitude and longitude in the designated fields.\n2. Press the \'Lookup\' button to retrieve the times.\n\nYou can view your saved locations in the list below. Click on any location to see more details or to delete it from the list.</string>
+    <string name="lookup_button">Lookup</string>
+    <string name="clear_button" translatable="false">Clear</string>
+</resources>
