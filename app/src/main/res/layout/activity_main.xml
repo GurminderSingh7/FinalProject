@@ -1,35 +1,59 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!-- Toolbar should be at the top -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+    <!-- EditText for latitude -->
     <EditText
         android:id="@+id/latitudeEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
         android:hint="Enter latitude" />
 
+    <!-- EditText for longitude -->
     <EditText
         android:id="@+id/longitudeEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter longitude"
-        android:layout_below="@id/latitudeEditText" />
+        android:layout_below="@id/latitudeEditText"
+        android:layout_marginTop="53dp"
+        android:hint="Enter longitude" />
 
+    <!-- Button for looking up information -->
     <Button
         android:id="@+id/lookupButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/lookup_button"
-        android:layout_below="@id/longitudeEditText" />
+        android:layout_below="@id/longitudeEditText"
+        android:layout_marginTop="48dp"
+        android:text="@string/lookup_button" />
+
+    <Button
+        android:id="@+id/clearButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/favoritesRecyclerView"
+        android:layout_marginTop="10dp"
+        android:text="@string/clear_button" />
 
     <!-- RecyclerView for displaying saved locations -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/favoritesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lookupButton" />
+        android:layout_below="@id/lookupButton"
+        android:layout_marginTop="54dp" />
 
 </RelativeLayout>
