@@ -46,9 +46,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  * and take quizzes. It also provides functionalities like removing favorites
  * and checking for internet connection.</p>
  *
- * <p>Author: [Author's Name]</p>
- * <p>Lab Section: [Lab Section Number]</p>
- * <p>Creation Date: [Creation Date]</p>
+ * <p>Author: Gurminder Singh Badwal</p>
+ * <p>Lab Section: 012</p>
+ * <p>Creation Date: 4th April 2024</p>
  */
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
